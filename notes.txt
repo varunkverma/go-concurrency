@@ -1,0 +1,45 @@
+GO's philosophy:
+    -   Don't communicate by sharing memory, share memory by communicating.
+
+->  Don't over-engineer things by using shared memory and complicated, error-prone synchronization primitives; instead, user message-passing between GoRoutines so variables and data can be used in the appropriate sequence. 
+
+->  A golden rule for concurrency: If you don't need it, don't use it.
+    Keep your application's complexity to an absolute minimum; it's easier to write, easier to understand, an easier to maintain.
+
+GoRoutines
+-   Running things in background, or concurrently.
+-   Every Go program has a goroutine.
+-   Go routines in effect are very lightweight threads. They run on very lightweight threads, not the bulit-in hardware threads of a processor; but instead ones that are specific to go itself.
+    They take vary little memory, they run very quickly and they are  all managed as a group of go routines, is called core routines. They are all managed by the Go's scheduler and it decides what runs, when, how much processing time one gets.
+-   In order to make a func call run in its own go routine, we write 'go' infront of it. So, it spawns in go routine, hands it off to the scheduler and the scheduler takes care of running it. 
+-   If you have multiple go routines running at the same time, even if they are the same function, you have no guarantees as to what order they complete in. Thts is entirely decided by the Go scheduler
+    -> WaitGroups
+        -   WaitGroups are really easy to use but never try to get them below zero or bad things happen.
+    -> Mutex
+        -   Stands for "mutual exclusion" - allows us to deal with race conditions
+        -   Dealing with shared resources and concurrent/parallel GoRoutines
+        -   Lock/UnLock
+        -   We can test for race conditions when running code, or testing it.
+        -   This allows us to deal with shared resources, like variables or something that can be accessed by atleast two go routines at the same time. So, if two or more go routines accesses the same data resource at the same time, unpredictable things can happen. This can be prevented by locking and unlocking the resources as necessary.
+        -   We can test for race conditions in go either when we run a program just by adding a flag to the go command or when test a program, when we actually run a unit test or an integration test.
+        - Race Conditions:
+            *   Race conditions occur when multiple GoRoutines try to access the same data.
+            *   Can ve difficult to spot when reading code.
+            *   Go allows us to check for them when running a program, or when testing our code with go test
+    -> Channels
+        -   Channels are a means of having GoRoutines share data. There are actually channels between those go routines which are running concurrentlyin the background
+        -   So, in effect, it lets one go routine, talk to another and channelscan go in both directions.
+        -   Channels are far more pwerful than mutexes or weightGroups, because they allow one go routine to exchange data with another go routine.
+        -   When you done using the channel, you MUST close it.
+        
+        -   A mean of allowing communication to and from a GoRoutine.
+            *   Once you fire off a go routine into the background, as it were, you have no way of directly communicating with it, apart from the use of channels
+        -   Channels can be buffered, where they can accept more than one thing in the channel, e.g., If you have a buffered channel of size 10, then you can put 10 things in the channel, 
+        or a channel can be unbuffered, which only takes one thing at a time
+        -   Once you're done with a channel, you must close it. If you don't close a channel, it can lead to a resource leak.
+        -   Channels typically only accepts a given type or interface
+        -   When reading from a channel, we receive a second bool variable, called "ok" and it tells whether the receiver value was sent on the channel (value is true) or it's a zero value returned because the channel is closed and empty, (value of oka is false).
+            This is an easy way to make sure that the channel is in fact not closed.
+        -   select statements are only useful for channels and they are a lot like the switch statement.
+            *   When in the select statement, if there are multiple cases that match the same Condition, it just chooses one at random
+            *   Its also possible to have a default case and this default case is useful in avoiding deadlock. If there's a situation where none of these channels are listening, then the default case will stop your program from crashing

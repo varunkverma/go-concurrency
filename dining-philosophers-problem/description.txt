@@ -1,0 +1,8 @@
+The Dining Philosophers
+
+*   A classic computer science problem introduced by Dijkstra in 1965.
+*   5 Philosophers live in a house together, and they always dine together at the same table, sitting in the same place.
+*   They always eat a special kind of spaghetti which requires two forks.
+*   There are 2 forks next to each plate, which means that no two neighbours can be eating at the same time.
+
+*   Problem: How do you write a program that ensures that no Philosopher will starve?
