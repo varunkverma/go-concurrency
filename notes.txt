@@ -43,3 +43,4 @@ GoRoutines
         -   select statements are only useful for channels and they are a lot like the switch statement.
             *   When in the select statement, if there are multiple cases that match the same Condition, it just chooses one at random
             *   Its also possible to have a default case and this default case is useful in avoiding deadlock. If there's a situation where none of these channels are listening, then the default case will stop your program from crashing
+        - Buffered goroutines are useful when you know how many go routines you've launched. Or we want to limit the number of go routines we launch, or we want to limit the amount of work that's queued up.
